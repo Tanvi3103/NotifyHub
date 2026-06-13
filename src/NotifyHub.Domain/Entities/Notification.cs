@@ -18,4 +18,7 @@ public class Notification : BaseEntity
     public DateTime? ReadAt { get; set; }
 
     public User User { get; set; } = null!;
+
+    public ICollection<NotificationLog> NotificationLogs { get; set; }
+    = new List<NotificationLog>();
 }
