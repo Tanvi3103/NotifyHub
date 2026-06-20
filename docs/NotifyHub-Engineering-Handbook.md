@@ -687,38 +687,208 @@ Status:
 
 ✅ Covered
 
+
+# Chapter 18 — Service Layer
+
+## What is a Service Layer?
+
+The Service Layer contains business operations and acts as an intermediary between controllers and the database.
+
+It encapsulates business logic and keeps controllers thin.
+
+---
+
+## Why Do We Need Services?
+
+Without services:
+
+```text
+Controller
+↓
+DbContext
+```
+
+Controllers become large and difficult to maintain.
+
+With a service layer:
+
+```text
+Controller
+↓
+Service
+↓
+DbContext
+↓
+SQL Server
+```
+
+Responsibilities are clearly separated.
+
+---
+
+## Current Service
+
+```csharp
+NotificationService
+```
+
+Implements:
+
+```csharp
+INotificationService
+```
+
+---
+
+## Constructor Injection
+
+```csharp
+private readonly NotifyHubDbContext _context;
+
+public NotificationService(NotifyHubDbContext context)
+{
+    _context = context;
+}
+```
+
+This demonstrates:
+
+* Dependency Injection
+* Constructor Injection
+* Inversion of Control
+
+---
+
+## Operations Implemented
+
+### CreateNotificationAsync()
+
+Creates a new notification and persists it.
+
+Uses:
+
+* Add()
+* SaveChangesAsync()
+
+---
+
+### GetNotificationsByUserIdAsync()
+
+Returns notifications belonging to a user.
+
+Uses:
+
+* Where()
+* Select()
+* ToListAsync()
+
+---
+
+### MarkAsReadAsync()
+
+Marks a notification as read.
+
+Uses:
+
+* FirstOrDefaultAsync()
+* SaveChangesAsync()
+
+---
+
+## C# Concepts Introduced
+
+### Constructors
+
+```csharp
+public NotificationService(NotifyHubDbContext context)
+```
+
+---
+
+### Async/Await
+
+```csharp
+await _context.SaveChangesAsync();
+```
+
+Benefits:
+
+* Non-blocking execution
+* Better scalability
+
+---
+
+### LINQ
+
+Example:
+
+```csharp
+.Where(n => n.UserId == userId)
+.Select(...)
+.ToListAsync()
+```
+
+LINQ provides a strongly typed way of querying collections and databases.
+
+---
+
+### Lambda Expressions
+
+Example:
+
+```csharp
+n => n.UserId == userId
+```
+
+---
+
+## Design Patterns Introduced
+
+### Service Layer Pattern
+
+Separates business logic from presentation logic.
+
+---
+
+### Repository Pattern
+
+⚠️ Pending
+
+---
+
+### Unit of Work Pattern
+
+⚠️ Pending
+
+---
+
+## Status
+
+✅ Covered
+
 ---
 
 # Current Progress
 
-Completed through:
-
-✅ Step 3 — Interfaces
+```text
+Domain
+↓
+Infrastructure
+↓
+EF Core
+↓
+Docker
+↓
+Migrations
+↓
+DTOs
+↓
+Interfaces
+↓
+Services
+✅
+```
 
 ---
 
-# Upcoming Topics
-
-⚠️ Services
-
-⚠️ Dependency Injection
-
-⚠️ Controllers
-
-⚠️ REST APIs
-
-⚠️ Swagger
-
-⚠️ SignalR
-
-⚠️ RabbitMQ
-
-⚠️ Redis
-
-⚠️ Unit Testing
-
-⚠️ SOLID Principles
-
-⚠️ Design Patterns
-
-⚠️ System Design
+This is where NotifyHub starts feeling like a real production API. 🚀
